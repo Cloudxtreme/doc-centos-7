@@ -11,7 +11,7 @@ date: 2017-03-07
 					<div class="col-md-8 col-md-offset-2">
 						<div class="brand">
 							<h1>{{ page.title }}</h1>
-							<h3>- {{ post.date | date_to_string }} -</h3>
+							<h3>- Date -</h3>
 						</div>
 					</div>
 				</div>
