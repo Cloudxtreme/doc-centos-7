@@ -2,11 +2,43 @@
 layout: default
 title: Kus Gautam's Blog
 ---
-	<h1>{{ page.title }}</h1>
-	<ul class="posts">
-
-	  {% for post in site.posts %}
-	    <li><span>{{ post.date | date_to_string }}</span> » <a href="{{ site.github.url }}{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
-		<!--<i>url: {{ site.github.url }}{{ post.url }}</i> -->
-	  {% endfor %}
-	</ul>
+	
+	<div class="wrapper">
+		<div class="header header-filter" style="background-image: url('img/bg2.jpeg');">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<div class="brand">
+							<h1>{{ page.title }}</h1>
+							<h3>- Internet Technology -</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="main main-raised margin-top">
+				<div class="section section-basic">
+			    	<div class="container">
+			            <div class="title">
+							<h2>Latest Blog posts</h2>
+			            </div>
+			            {% for post in site.posts %}
+				            <div class="row">
+				                <div class="col-md-3 col-md-offset-1">
+				                	<div class="card" style="background: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQbd_L5C1-_6MsDequ_HJSNjlkB7Qhtwq20hQG_neOqWGp0ytf6qA') no-repeat center; height: 180px; width: 300px;">
+				            		</div>
+				                </div>
+				                <div class="col-md-5 col-md-offset-1">
+				                	<p><strong>Category</strong></p>
+				                	<a href="{{ site.github.url }}{{ post.url }}" title="{{ post.title }}"><h4>{{ post.title }}</h4></a>
+				                	<p>
+				                		Like so many organizations these days, Autodesk is a company in transition. It was until recently a traditional boxed software company selling licenses. Yet its own business model disruption is only part of the story — and… <a href="">Read More</a>
+				                	</p>
+				                	<p>by <strong>Kus Gautam</strong>, {{ post.date | date_to_string }}</p>
+				                </div>
+				            </div>
+				        {% endfor %}
+			        </div>
+			    </div>
+			</div>
+		</div>
+</div>
