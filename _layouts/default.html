@@ -7,7 +7,7 @@
 	<link rel="icon" type="image/png" href="img/favicon.png">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Kus Gautam - ITBlog</title>
+	<title>{{ page.title }}</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
@@ -19,8 +19,8 @@
 	<!-- CSS Files -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/material-kit.css" rel="stylesheet"/>
-    <link href="css/empresa-blog.css" rel="stylesheet"/>
 	<link href="css/demo.css" rel="stylesheet" />
+    <link href="css/empresa-blog.css" rel="stylesheet"/>
 
 </head>
 
@@ -50,12 +50,12 @@
 	    <div class="collapse navbar-collapse" id="navigation-index">
 	    	<ul class="nav navbar-nav navbar-right">
 				<li>
-					<a href="/" target="_blank">
+					<a href="{{ site.github.url }}" target="_blank">
 						<i class="material-icons">home</i> Home
 					</a>
 				</li>
 				<li>
-					<a href="http://demos.creative-tim.com/material-kit-pro/presentation.html?ref=utp-freebie" target="_blank">
+					<a href="{{ site.github.url }}/blog" target="_blank">
 						<i class="material-icons">chrome_reader_mode</i>Blog
 					</a>
 				</li>
