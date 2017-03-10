@@ -28,7 +28,7 @@ date: 2017-03-07
 				                	<p>
 				                		A "LAMP" stack is a group of open source software that is typically installed together to enable a server to host dynamic websites and web apps. This term is actually an acronym which represents the Linux operating system, with the Apache web server. The site data is stored in a MySQL database (using MariaDB), and dynamic content is processed by PHP...  <a href="{{ site.github.url }}{{ post.url }}" class="margin-left">Read More</a>
 				                	</p>
-				                	<p>by <strong>Kus Gautam</strong>, {{ post.date | date_to_string }}</p>	
+				                	<p>by <strong>Kus Gautam</strong>, 11 March, 2017</p>	
 				                </div>
 				            </div>
 			        </div>
