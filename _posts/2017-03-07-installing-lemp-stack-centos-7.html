@@ -18,14 +18,238 @@ date: 2017-03-07
 			    </div>
 			    <div class="row">
 			        <div class="col-md-4 col-md-offset-3">
-				            <div class="card margin-left" style="background: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQbd_L5C1-_6MsDequ_HJSNjlkB7Qhtwq20hQG_neOqWGp0ytf6qA') no-repeat center; height: 200px; width: 400px;">
-				            </div>
+				        <div class="card margin-left" style="background: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQbd_L5C1-_6MsDequ_HJSNjlkB7Qhtwq20hQG_neOqWGp0ytf6qA') no-repeat center; height: 200px; width: 400px;">
 				        </div>
+				    </div>
 			        <div class="col-md-10 col-md-offset-1 margin-top">
-				        <p>
-				        	A "LAMP" stack is a group of open source software that is typically installed together to enable a server to host dynamic websites and web apps. This term is actually an acronym which represents the Linux operating system, with the Apache web server. The site data is stored in a MySQL database (using MariaDB), and dynamic content is processed by PHP.
+				        <h3> Install Linux, Apache, MySQL, PHP (LAMP) stack On CentOS 7</h3>
+				        <p class="text-muted">Posted 11 March, 2017</p>
+				        <h3>Introduction</h3>
+				        <p>A <b>"LAMP"</b> stack is a group of open source software that is typically installed together to enable a server to host dynamic websites and web apps. This term is actually an acronym which represents the <b>L</b>inux operating system, with the <b>A</b>pache web server. The site data is stored in a <b>M</b>ySQL database (using MariaDB), and dynamic content is processed by <b>P</b>HP.</p>
+
+				        <p><strong>Note: </strong>In this guide, we'll get a LAMP stack installed on an CentOS 7 VPS. CentOS will fulfill our first requirement: a Linux operating system.</p>
 				        <hr>
-				    	<p>by <strong>Kus Gautam</strong>, 2 day ago</p>
+
+						<!-- Tabs with icons on Card -->
+						<div class="card card-nav-tabs card-plain">
+							
+							<!-- Fragments -->
+							<div class="header header-info">
+								<!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+								<div class="nav-tabs-navigation">
+									<div class="nav-tabs-wrapper">
+										<ul class="nav nav-tabs" data-tabs="tabs">
+											<li class="nav-stepone active">
+												<a href="#stepone" class="nav_stepone" data-toggle="tab">
+													<i class="material-icons">looks_one</i>
+													Apache
+												</a>
+											</li>
+											<li class="nav-steptwo">
+												<a href="#steptwo" class="nav_steptwo" data-toggle="tab">
+													<i class="material-icons">looks_two</i>
+													MySQL
+												</a>
+											</li>
+											<li class="nav-stepthree">
+												<a href="#stepthree" class="nav_stepthree" data-toggle="tab">
+													<i class="material-icons">looks_3</i>
+													PHP
+												</a>
+											</li>
+											<li class="nav-stepfour">
+												<a href="#stepfour" class="nav_stepfour" data-toggle="tab">
+													<i class="material-icons">looks_4</i>
+													Final
+												</a>
+
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							
+							<!-- Contents -->
+							<div class="content">
+								<div class="tab-content">
+									<div class="tab-pane active" id="stepone">
+										<h3>Install Apache</h3>
+
+								        <p>The Apache web server is currently the most popular web server in the world, which makes it a great default choice for hosting a website.</p>
+								    	<p>We can install Apache easily using CentOS's package manager, <code>yum</code>. A package manager allows us to install most software pain-free from a repository maintained by CentOS.</p>
+								        <p>Before you begin any installation, make sure that your software is up to date:</p>
+								        
+								        <p><code>$ sudo yum update</code></p>
+
+								    	<h5>We can get started by typing these commands:</h5>
+								    	
+								    	<p><code>$ sudo yum install httpd</code></p>
+
+								    	<p>Since we are using a sudo command, these operations get executed with root privileges. It will ask you for your regular user's password to verify your intentions.</p>
+										<p>Afterwards, your web server is installed.</p>
+										<p>Once it installs, you can start Apache on your VPS:</p>
+
+										<p><code>$ sudo systemctl start httpd.service</code></p>
+
+										<p>Verify that Apache is installed by going to:</p>
+										
+										<p><code>http://your server's IP address</code></p>
+										
+										<p>OR: <code>localhost</code></p>
+								    	
+								    	<p>You will see the default CentOS 7 Apache web page, It should look something like this:</p>
+								    	<p><img src="https://goo.gl/gIy8fg"></p>
+
+								    	<p>If you see this page, then your web server is now correctly installed.</p>
+								    	<p>The last thing you will want to do is enable Apache to start on boot. Use the following command to do so:</p>
+
+								    	<p><code>$ sudo systemctl enable httpd.service</code></p>
+
+								    	<p>Go to Next Step!</p>
+									</div>
+									<div class="tab-pane" id="steptwo">
+										<h3>Install MySQL (MariaDB)</h3>
+								    	
+								    	<p>Now, we have our web server up and running, it is time to install MariaDB, a MySQL drop-in replacement. MariaDB is a community-developed fork of the MySQL relational database management system. Basically, it will organize and provide access to databases where our site can store information.</p>
+										<p>Again, we can use <code>yum</code> to acquire and install our software. This time, we'll also install some other "helper" packages that will assist us in getting our components to communicate with each other:</p>
+
+										<p><code> $ sudo yum install mariadb-server mariadb</code></p>
+
+										<p>When the installation is complete, we need to start MariaDB with the following command:</p>
+										<p><code>$ sudo systemctl start mariadb</code></p>
+
+										<p>Now, run a simple security script that will remove some dangerous defaults and lock down access to our database system a little bit. Start the interactive script by running:</p>
+
+								    	<p><code>$ sudo mysql_secure_installation</code></p>
+
+								    	<p>Then the prompt will ask you if you want to set a root password. Go ahead and enter <code>Y</code>, and follow the instructions:</p>
+								    	<p><img src="https://goo.gl/QRey7p"></p>
+
+										<p>This will remove some sample users and databases, disable remote root logins, and load these new rules so that MySQL immediately respects the changes we have made.</p>
+										<p>The last thing you will want to do is enable MariaDB to start on boot. Use the following command to do so:</p>
+
+										<p><code>$ sudo systemctl enable mariadb.service</code></p>
+										
+										<p>At this point, your database system is now set up and we can move on.</p>
+										<p>Go to Next Step!</p>
+									</div>
+									<div class="tab-pane" id="stepthree">
+										<h3>Install PHP</h3>
+
+										<p>PHP is the component of our setup that will process code to display dynamic content. It can run scripts, connect to our MySQL databases to get information, and hand the processed content over to our web server to display.</p>
+										<p>We can once again leverage the yum system to install our components. We're going to include the php-mysql package as well:</p>
+
+										<p><code>$ sudo yum install php php-mysql</code></p>
+										
+										<p>This should install PHP without any problems. We need to restart the Apache web server in order for it to work with PHP. You can do this by typing this:</p>
+
+										<p><code>$ sudo systemctl restart httpd.service</code>
+
+										<h3>Install PHP Modules</h3>
+										<p>To enhance the functionality of PHP, we can optionally install some additional modules.</p>
+										<p>To see the available options for PHP modules and libraries, you can type this into your system:</p>
+
+										<p><code>$ yum search php-</code></p>
+
+										<p>The results are all optional components that you can install. It will give you a short description for each:</p>
+										<p><img src="https://goo.gl/ER8rXr"></p>
+										<p>To get more information about what each module does, you can either search the internet, or you can look at the long description in the package by typing:</p>
+
+										<p><code>$ yum info package_name</code></p>
+
+										<p>For example, to find out what the php-fpm module does, we could type this:</p>
+
+										<p><code>$ yum info php-fpm</code></p>
+										
+										<p>Along with a large amount of other information, you'll find something that looks like this:</p>
+										<p><img src="https://goo.gl/fcNSPu"></p>
+
+										<p>If we decided that php-fpm is something that we need, we could type:</p>
+
+										<p><code>$ sudo yum install php-fpm</code></p>
+
+										<p>If you want to install more than one module, you can do that by listing each one, separated by a space, following the yum install command, like this:</p>
+
+										<p><code>$ sudo yum install package1 package2 ...</code></p>
+
+										<p>At this point, your LAMP stack is installed and configured. We should still test out our PHP though.</p>
+										<p>Go to Next Step!</p>
+									</div>
+									<div class="tab-pane" id="stepfour">
+										<h3>Test PHP Processing on your Web Server</h3>
+
+										<p>In order to test that our system is configured properly for PHP, we can create a very basic PHP script.</p>
+										<p>We will call this script <code>info.php</code>. In order for Apache to find the file and serve it correctly, it must be saved to a very specific directory, which is called the "web root".</p>
+										<p>In CentOS 7, this directory is located at <code>/var/www/html/</code>. We can create the file at that location by typing:</p>
+
+										<p><code>$ sudo vi /var/www/html/info.php</code></p>
+
+										<p>This will open a blank file. We want to put the following text, which is valid PHP code, inside the file:</p>
+
+										<p><code>&lt;?php phpinfo(); ?&gt;</code></p>
+
+										<p>When you are finished, save and close the file.</p>
+										<p>If you are running a firewall, run the following commands to allow HTTP and HTTPS traffic:</p>
+
+										<p><code>$ sudo firewall-cmd --permanent --zone=public --add-service=http</code></p>
+										<p><code>$ sudo firewall-cmd --permanent --zone=public --add-service=https</code></p>
+										<p><code>$ sudo firewall-cmd --reload</code></p>
+
+										<p>Now we can test whether our web server can correctly display content generated by a PHP script. To try this out, we just have to visit this page in our web browser. You'll need your server's public IP address again.</p>
+										<p>The address you want to visit will be:</p>
+										
+										<p><code>http://your_server_IP_address/info.php</code>
+										<p>OR: <code>localhost/info.php</code></p>
+										
+										<p>The page that you come to should look something like this:</p>
+										<p><img src="https://goo.gl/cioimV"></p>
+										<p>This page basically gives you information about your server from the perspective of PHP. It is useful for debugging and to ensure that your settings are being applied correctly.</p>
+
+										<p>If this was successful, then your PHP is working as expected.</p>
+
+										<p>You probably want to remove this file after this test because it could actually give information about your server to unauthorized users. To do this, you can type this:</p>
+
+										<p><code>$ sudo rm /var/www/html/info.php</code></p>
+										<p>You can always recreate this page if you need to access the information again later.</p>
+										<hr>
+
+										<h3>Conclusion</h3>
+										<p>Now that you have a LAMP stack installed, you have many choices for what to do next. Basically, you've installed a platform that will allow you to install most kinds of websites and web software on your server.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End Tabs with icons on Card -->
+						<hr>
+						<!-- Nav Pill with Icons on card -->
+						<!-- <div id="nav-pills-pagination">
+							<ul class="nav nav-pills nav-pills-info pull-right" role="tablist">
+								<li class="pills-previous prev-tab">
+									<a href="#" class="pills_previous" role="tab" data-toggle="tab" aria-expanded="true">
+										<i class="material-icons">keyboard_arrow_left</i>
+										Previous
+									</a>
+								</li>
+								<li class="pills-next next-tab">
+		                            <a href="#" class="pills_next" role="tab" data-toggle="tab" aria-expanded="false">
+										<i class="material-icons">keyboard_arrow_right</i>
+										Next
+		                            </a>
+		                        </li>
+							</ul>
+						</div> -->
+						<!-- Circle Image with rounded corner -->
+						<div class="media">
+						  <div class="media-left">
+						    <a href="#">
+						      <img class="media-object img-circle" src="img/logo.png" alt="author_image">
+						    </a>
+						  </div>
+						  <div class="media-body">
+						    <h4 class="media-heading">Kus Gautam</h4>
+						    Admin
+						  </div>
+						</div>				    	
 					</div>
 			    </div>
 			</div>
