@@ -29,10 +29,132 @@ date: 2017-03-14
 				        <hr>
 
 				        <h3>Introduction</h3>
-				        <p>We will go over how to set up an internal DNS server, using the BIND name server software (BIND9) on CentOS 7, that can be used by your Virtual Private Servers (VPS) to resolve private host names and private IP addresses. This provides a central way to manage your internal hostnames and private IP addresses, which is indispensable when your environment expands to more than a few hosts.</p>
-
-				        <p><strong>Note: </strong></p>
+				        <p>DNS, stands for Domain Name System, translates hostnames or URLs into IP addresses. For example, if we type www.unixmen.com in browser, the DNS server translates the domain name into its associated ip address. Since the IP addresses are hard to remember all time, DNS servers are used to translate the hostnames like www.unixmen.com to 173.xxx.xx.xxx. So it makes easy to remember the domain names instead of its IP address.</p>
+						<p><strong>Note: </strong>This guide will help you to set up a local DNS server on your CentOS 7 system.</p>
 				        <hr>
+
+				        <h3>DNS Server Installation</h3>
+				        <h3>Scenario</h3>
+				        <p>For the purpose of this tutorial, I will be using one node, that will be acting as Primary (Master) DNS server and here are the details.</p>
+				        <strong>Primary (Master) DNS Server Details:</strong>
+				        <ul>
+				        	<li>operating System: CentOS 7 minimal server</li>
+				        	<li>Hostname: masterdns.groupa.local</li>
+				        	<li>Ip Address: 192.168.10.184</li>
+				        </ul>
+				        <h3>Setup Primary (Master) DNS Server</h3>
+				        <p>Install bind9 packages on your server.</p>
+
+						<p><code>$ yum install bind bind-utils -y</code></p>
+
+						<h4>1. Configure DNS Server</h4>
+						<p>Edit <code>/etc/named.conf</code> file.</p>
+
+						<p><code>$ vi /etc/named.conf</code></p>
+						<p>Add the lines as shown in bold:</p>
+						<p><img src="https://goo.gl/87Ey3O"></p>
+
+						<h4>2. Create Zone file</h4>
+						<p>Create forward and reverse zone files which we mentioned in the <code>/etc/named.conf</code> file.</p>
+
+						<h4>2.1 Create Forward Zone</h4>
+						<p>Create <strong>forward.groupa</strong> file in the <code>/var/named</code> directory.</p>
+
+						<p><code>$ vi /var/named/forward.groupa</code></p>
+						
+						<p>Add the following lines:</p>						
+						<p><img src="https://goo.gl/3Oqmnt"></p>
+
+						<h4>2.2 Create Reverse Zone</h4>
+
+						<p>Create <strong>reverse.groupa</strong> file in the <code>/var/named</code> directory.</p>
+
+						<p><code>$ vi /var/named/reverse.groupa</code></p>
+						<p>Add the following lines:</p>
+						<p><img src="https://goo.gl/qAzJht"></p>
+
+						<h4>3. Start the DNS service</h4>
+
+						<p>Enable and start DNS service:</p>
+
+						<p><code>$ systemctl enable named</code></p>
+						<p><code>$ systemctl start named</code></p>
+						
+						<h4>4. Firewall Configuration</h4>
+
+						<p>We must allow the DNS service default port 53 through firewall.</p>
+
+						<p><code>$ firewall-cmd --permanent --add-port=53/tcp</code></p>
+						<p><code>$ firewall-cmd --permanent --add-port=53/udp</code></p>
+						
+						<h4>5. Restart Firewall</h4>
+
+						<p><code>$ firewall-cmd --reload</code></p>
+
+						<h4>6. Configuring Permissions, Ownership, and SELinux</h4>
+
+						<p>Run the following commands one by one:</p>
+
+						<p><code>$ chmod 777 /var/named/forward.groupa</code></p>
+						<p><code>$ chmod 777 /var/named/reverse.groupa</code></p>
+
+						<h4>7. Test DNS configuration and zone files for any syntax errors</h4>
+
+						<p>Check DNS default configuration file:</p>
+
+						<p><code>$ named-checkconf /etc/named.conf</code></p>
+						
+						<p>If it returns nothing, your configuration file is valid.</p>
+
+						<p>Check Forward zone:</p>
+
+						<p><code>$ named-checkzone groupa.local /var/named/forward.groupa</code></p>
+						
+						<p>Sample output:</p>
+
+						<p><code>zone groupa.local/IN: loaded serial 2011071001<br>
+						OK
+						</code></p>
+
+						<p>Check reverse zone:</p>
+
+						<p><code>$ named-checkzone groupa.local /var/named/reverse.groupa</code></p>
+						
+						<p>Sample Output:</p>
+
+						<p><code>zone groupa.local/IN: loaded serial 2011071001<br>
+						OK
+						</code></p>
+
+						<p>Add the DNS Server details in your network interface config file.</p>
+
+						<p><code>$ vi /etc/sysconfig/network-scripts/ifcfg-enp0s3</code></p>
+						<p><img src="https://goo.gl/Quf638"></p>
+
+						<p>Edit file <code>/etc/resolv.conf</code></p>
+
+						<p><code>$ vi /etc/resolv.conf</code></p>
+						
+						<p>Add the name server ip address:</p>
+
+						<p><code>nameserver      192.168.10.184</code></p>
+						<p>Save and close the file.</p>
+
+						<p>Restart network service:</p>
+
+						<p><code>$ systemctl restart network</code></p>
+
+						<h4>8. Test DNS Server</h4>
+
+						<p><code>$ dig masterdns.groupa.local</code></p>
+						<p>Sample Output:</p>
+						<p><img src="https://goo.gl/R16XqX"></p>
+
+						<p><code>$ nslookup groupa.local</code></p>
+						
+						<p>Sample Output:</p>
+						<p><img src="https://goo.gl/9RnOo6"></p>
+						<p>Now the Primary DNS server is ready to use.
 					</div>
 			    </div>
 			</div>
