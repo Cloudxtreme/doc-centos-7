@@ -25,19 +25,16 @@ title: Kus Gautam's Blog
 					<hr>
 			    </div>
 			    {% for post in site.posts %}
-				    <div class="row margin-large-top">
-				        <div class="col-md-3 col-md-offset-2">
-				            <div class="card margin-left" style="background: url({{ post.img-url }}) no-repeat center; height: 180px; width: 300px;">
-				            </div>
-				        </div>
-					    <div class="col-md-5 col-md-offset-1">
-					        <!-- <p><strong>Category</strong></p> -->
-					        <a href="{{ site.github.url }}{{ post.url }}"><h4>{{ post.title }}</h4></a>
-					        <p>{{ post.descrip }}... <a href="{{ site.github.url }}{{ post.url }}" class="margin-left">Read More</a>
-					        </p>
-					    	<p>by <strong>Kus Gautam</strong>, {{ post.date | date_to_string }}</p>
-						</div>
-				    </div>
+				    <div class="grid">
+						<figure class="effect-oscar">
+							<img src="{{ post.img-url }}" alt="img-wordpress"/>
+							<figcaption>
+								<h3>{{ post.title }} <span>CentOS 7</span></h3>
+								<p>{{ post.date | date_to_string }} <br>by <strong>Kus Gautam</strong></p>
+								<a href="{{ site.github.url }}{{ post.url }}">View more</a>
+							</figcaption>			
+						</figure>
+					</div>
 			    {% endfor %}
 			</div>
 		</div>
