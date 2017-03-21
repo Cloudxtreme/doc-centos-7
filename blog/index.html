@@ -24,8 +24,8 @@ title: Kus Gautam's Blog
 					<h3>Latest Blog posts</h3>
 					<hr>
 			    </div>
-			    {% for post in site.posts %}
 				    <div class="grid">
+			    		{% for post in site.posts %}
 						<figure class="effect-oscar">
 							<img src="{{ post.img-url }}" alt="img-wordpress"/>
 							<figcaption>
@@ -34,8 +34,8 @@ title: Kus Gautam's Blog
 								<a href="{{ site.github.url }}{{ post.url }}">View more</a>
 							</figcaption>			
 						</figure>
+			    		{% endfor %}
 					</div>
-			    {% endfor %}
 			</div>
 		</div>
 	</div>
