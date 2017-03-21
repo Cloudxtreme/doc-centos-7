@@ -1,0 +1,175 @@
+---
+layout: post
+title: "Installing wordpress on CentOS 7"
+descrip: "WordPress is a free and open source website and blogging tool that uses PHP and MySQL. WordPress is currently the most popular CMS (Content Management System) on the Internet, and has over 20,000 plugins to extend its functionality."
+img-url: "https://goo.gl/uRf6Fj"
+date: 2017-03-21
+---
+
+<div class="wrapper">
+	<div class="header header-filter" style="background: url('{{ site.github.url }}/img/bg2.jpeg') no-repeat center; height: 40vh; min-height: 200px;">
+	</div>
+</div>
+
+<div class="main main-raised">
+	<div class="section section-basic">
+			<div class="container">
+			    <div class="title">
+					<h2>Installing Wordpress on CentOS 7</h2>
+					<hr>
+			    </div>
+			    <div class="row">
+			        <div class="col-md-4 col-md-offset-3">
+				        <div class="margin-left" style="background: url('https://goo.gl/x0Y5Xb') no-repeat center; height: 360px; width: 450px;">
+				        </div>
+				    </div>
+			        <div class="col-md-10 col-md-offset-1 margin-top">
+				        <h3>Wordpress on CentOS 7</h3>
+				        <p class="text-muted">Posted by: kusgautam</p>
+				        <hr>
+
+				        <h3>Introduction</h3>
+				        <p>WordPress is a free and open source website and blogging tool that uses PHP and MySQL. WordPress is currently the most popular CMS (Content Management System) on the Internet, and has over 20,000 plugins to extend its functionality. This makes WordPress a great choice for getting a website up and running quickly and easily.</p>
+						<p><strong>Note: </strong>In this guide, we will demonstrate how to get a WordPress instance set up with an Apache web server on CentOS 7.</p>
+				        <hr>
+
+				        <h3>Prerequisites</h3>
+				        
+				        <p>Before you begin with this guide, there are a few steps that need to be completed first.</p>
+				        <p>You will need a CentOS 7 server installed and configured with a non-root user that has sudo privileges. Additionally, you'll need to have a LAMP (Linux, Apache, MySQL, and PHP) stack installed on your CentOS 7 server. If you don't have these components already installed or configured, you can use this guide to learn <a href="{{ site.github.url }}/blog/2017/03/07/installing-lamp-stack-centos-7">Installing LAMP Stack on CentOS 7</a>.</p>
+				        <p>When you are finished with these steps, you can continue with the installation of WordPress.</p>
+
+				        <h3>Step One — Create a MySQL Database and User for WordPress</h3>
+				        <p>The first step that we will take is in preparation. WordPress uses a relational database to manage information for the site and its users. We have MariaDB (a fork of MySQL) installed already, which can provide this functionality, but we need to make a database and a user for WordPress to work with.</p>
+						<p>To get started, log into MySQL's root (administrative) account by issuing this command:</p>
+
+						<p><code>$ mysql -u root -p</code></p>
+
+						<p>You will be prompted for the password that you set for the root account when you installed MySQL.</p>
+
+						<p>Now, you will be given a MySQL command prompt.</p>
+						<p>First, we'll create a new database that WordPress can control. You can call this whatever you would like, but I will be calling it wordpress for this example.</p>
+
+						<p>Edit <code>MariaDB> CREATE DATABASE wordpress;</code> file.</p>
+
+						<p><strong>Note:</strong>Every MySQL statement or command must end in a semi-colon (<code>;</code>), so check to make sure that this is present if you are running into any issues.
+						
+						<p>Next, we are going to create a new MySQL user account that we will use exclusively to operate on WordPress's new database. </p>
+
+						<p><code>MariaDB>CREATE USER wordpressuser@localhost IDENTIFIED BY 'password';</code></p>
+						<p>I am going to call the new account wordpressuser and will assign it a password of password. You should definitely use a different username and password.</p>
+
+						<p>At this point, you have a database and user account that are each specifically made for WordPress. However, the user has no access to the database. We need to link the two components together by granting our user access to the database.</p>
+
+						<p><code>MariaDB> GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED BY 'password';</code></p>
+						
+						<p>Now that the user has access to the database, we need to flush the privileges so that MySQL knows about the recent privilege changes that we've made:</p>
+
+						<p><code>FLUSH PRIVILEGES;</code></p>
+
+						<p>Once these commands have all been executed, we can exit out of the MySQL command prompt by typing:</p>
+						<p><code>exit</code></p>
+
+						<p>You should now be back to your regular Terminal or SSH command prompt.
+
+						<h3>Step Two — Install WordPress</h3>
+
+						<p>Before we download WordPress, there is one PHP module that we need to install to ensure that it works properly. Without this module, WordPress will not be able to resize images to create thumbnails. We can get that package directly from CentOS's default repositories using yum:</p>
+
+						<p><code>$ sudo yum install php-gd</code></p>
+						
+						<p>Now we need to restart Apache so that it recognizes the new module:</p>
+
+						<p><code>$ sudo service httpd restart</code></p>
+
+						<p>We are now ready to download and install WordPress from the project's website. We can get the most up-to-date version of WordPress by typing this:</p>
+
+						<p><code>$ cd ~<br>
+						wget http://wordpress.org/latest.tar.gz</code></p>
+
+						<p>This will download a compressed archive file that contains all of the WordPress files that we need. We can extract the archived files to rebuild the WordPress directory with <code>tar</code>:</p>
+
+						<p><code>$ tar xzvf latest.tar.gz</code></p>
+
+						<p>You will now have a directory called <code>wordpress</code> in your home directory. We can finish the installation by transferring the unpacked files to Apache's document root, where it can be served to visitors of our website. We can transfer our WordPress files there with <code>rsync</code>, which will preserve the files' default permissions:</p>
+
+						<p><code>$ sudo rsync -avP ~/wordpress/ /var/www/html/</code></p>
+						
+						<p><code>rysnc</code> will safely copy all of the contents from the directory you unpacked to the document root at <code>/var/www/html/</code>. However, we still need to add a folder for WordPress to store uploaded files. We can do that with the <code>mkdir</code> command:</p>
+
+						<p><code>$ mkdir /var/www/html/wp-content/uploads</code></p>
+						
+						<p>Now we need to assign the correct ownership and permissions to our WordPress files and folders. This will increase security while still allowing WordPress to function as intended. To do this, we'll use <code>chown</code> to grant ownership to Apache's user and group:</p>
+
+						<p><code>$ sudo chown -R apache:apache /var/www/html/*</code></p>
+
+						<p>With this change, the web server will be able to create and modify WordPress files, and will also allow us to upload content to the server.</p>						
+						
+						<h3>Step Three — Configure WordPress</h3>
+					
+						<p>Most of the configuration required to use WordPress will be completed through a web interface later on. However, we need to do some work from the command line to ensure that WordPress can connect to the MySQL database that we created for it.</p>
+
+						<p>Begin by moving into the Apache root directory where you installed WordPress:</p>
+
+						<p><code>$ cd /var/www/html</code>
+						
+						<p>The main configuration file that WordPress relies on is called <code>wp-config.php</code>. A sample configuration file that mostly matches the settings we need is included by default. All we have to do is copy it to the default configuration file location, so that WordPress can recognize and use the file:</p>
+
+						<p><code>cp wp-config-sample.php wp-config.php</code></p>
+
+						<p>Now that we have a configuration file to work with, let's open it in a text editor:</p>
+
+						<p><code>nano wp-config.php</code></p>
+
+						<p>The only modifications we need to make to this file are to the parameters that hold our database information. We will need to find the section titled MySQL settings and change the DB_NAME, DB_USER, and DB_PASSWORD variables in order for WordPress to correctly connect and authenticate to the database that we created.</p>
+
+						<p>Fill in the values of these parameters with the information for the database that you created. It should look like this:</p>
+
+						<p><img src="https://goo.gl/BBxik5"></p>
+
+						<p>These are the only values that you need to change, so save and close the file when you are finished.</p>
+
+						<h3>Step Four — Complete Installation Through the Web Interface</h3>
+
+						<p>Now that you have your files in place and your software is configured, you can complete the WordPress installation through the web interface. In your web browser, navigate to your server's domain name or public IP address:</p>
+
+						<p><code>http://server_domain_name_or_IP</code>
+
+						<p>First, you will need to select the language that you would like to install WordPress with. Then you will be presented with the WordPress initial configuration page, where you will create an initial administrator account:</p>
+
+						<p><img src="https://goo.gl/eJAH9h"></p>
+
+						<p>Fill out the information for the site and administrative account that you wish to make. When you are finished, click on the Install WordPress button at the bottom to continue.</p>
+
+						<p>WordPress will confirm the installation, and then ask you to log in with the account that you just created:</p>
+
+						<p><img src="https://goo.gl/kXt3EL">
+
+						<p>To continue, hit the Log in button at the bottom, then fill out your administrator account information:</p>
+
+						<p><img src="https://goo.gl/dVh5Dh">
+
+						<p>After hitting Log in, you will be presented with your new WordPress dashboard:</p>
+
+						<p><img src="https://goo.gl/iSeUlj">
+
+						<h3>Conclusion</h3>
+						<p>You should now have a WordPress instance up and running on your CentOS 7 server.</p>
+					</div>
+			    </div>
+			<hr>
+				<!-- Circle Image with rounded corner -->
+			<div class="media">
+				<div class="media-left">
+				  <a href="#">
+				    <img class="media-object img-circle" src="{{ site.github.url }}/img/author-img.jpg" alt="author_image">
+				  </a>
+				</div>
+				<div class="media-body">
+				  <h4 class="media-heading">Kus Gautam</h4>
+				  Developer | Designer
+				</div>
+			</div>
+			</div>
+		</div>
+</div>	
