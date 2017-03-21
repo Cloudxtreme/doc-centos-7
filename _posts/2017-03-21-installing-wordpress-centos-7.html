@@ -36,7 +36,8 @@ date: 2017-03-21
 				        <h3>Prerequisites</h3>
 				        
 				        <p>Before you begin with this guide, there are a few steps that need to be completed first.</p>
-				        <p>You will need a CentOS 7 server installed and configured with a non-root user that has sudo privileges. Additionally, you'll need to have a LAMP (Linux, Apache, MySQL, and PHP) stack installed on your CentOS 7 server. If you don't have these components already installed or configured, you can use this guide to learn <a href="{{ site.github.url }}/blog/2017/03/07/installing-lamp-stack-centos-7">Installing LAMP Stack on CentOS 7</a>.</p>
+				        <p>You will need a CentOS 7 server installed and configured with a non-root user that has sudo privileges.<br>
+				        Additionally, you'll need to have a LAMP (Linux, Apache, MySQL, and PHP) stack installed on your CentOS 7 server. If you don't have these components already installed or configured, you can use this guide to learn <a href="{{ site.github.url }}/blog/2017/03/07/installing-lamp-stack-centos-7">Installing LAMP Stack on CentOS 7</a>.</p>
 				        <p>When you are finished with these steps, you can continue with the installation of WordPress.</p>
 
 				        <h3>Step One — Create a MySQL Database and User for WordPress</h3>
@@ -47,12 +48,12 @@ date: 2017-03-21
 
 						<p>You will be prompted for the password that you set for the root account when you installed MySQL.</p>
 
-						<p>Now, you will be given a MySQL command prompt.</p>
-						<p>First, we'll create a new database that WordPress can control. You can call this whatever you would like, but I will be calling it wordpress for this example.</p>
+						<p>Now, you will be given a MySQL command prompt. First, we'll create a new database that WordPress can control. You can call this whatever you would like, but I will be calling it wordpress for this example.</p>
 
 						<p><code>$ CREATE DATABASE wordpress;</code></p>
 
-						<p><strong>Note:</strong>Every MySQL statement or command must end in a semi-colon (<code>;</code>), so check to make sure that this is present if you are running into any issues.
+						<p><strong>Note:</strong> Every MySQL statement or command must end in a semi-colon (<code>;</code>),<br>
+						So check to make sure that this is present if you are running into any issues.
 						
 						<p>Next, we are going to create a new MySQL user account that we will use exclusively to operate on WordPress's new database. </p>
 
@@ -65,10 +66,10 @@ date: 2017-03-21
 						
 						<p>Now that the user has access to the database, we need to flush the privileges so that MySQL knows about the recent privilege changes that we've made:</p>
 
-						<p><code>FLUSH PRIVILEGES;</code></p>
+						<p><code>$ FLUSH PRIVILEGES;</code></p>
 
 						<p>Once these commands have all been executed, we can exit out of the MySQL command prompt by typing:</p>
-						<p><code>exit</code></p>
+						<p><code>$ exit</code></p>
 
 						<p>You should now be back to your regular Terminal or SSH command prompt.
 
@@ -115,11 +116,11 @@ date: 2017-03-21
 						
 						<p>The main configuration file that WordPress relies on is called <code>wp-config.php</code>. A sample configuration file that mostly matches the settings we need is included by default. All we have to do is copy it to the default configuration file location, so that WordPress can recognize and use the file:</p>
 
-						<p><code>cp wp-config-sample.php wp-config.php</code></p>
+						<p><code>$ cp wp-config-sample.php wp-config.php</code></p>
 
 						<p>Now that we have a configuration file to work with, let's open it in a text editor:</p>
 
-						<p><code>nano wp-config.php</code></p>
+						<p><code>$ nano wp-config.php</code></p>
 
 						<p>The only modifications we need to make to this file are to the parameters that hold our database information. We will need to find the section titled MySQL settings and change the DB_NAME, DB_USER, and DB_PASSWORD variables in order for WordPress to correctly connect and authenticate to the database that we created.</p>
 
